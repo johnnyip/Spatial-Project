@@ -22,8 +22,8 @@ proj4.defs([
 const client = new Client({
   host: 'johnnyip.com',
   port: 5434,
-  user: '',
-  password: '',
+  user: 'ust',
+  password: 'USTust123!',
   database: 'test-geo',
 });
 
