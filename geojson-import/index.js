@@ -20,10 +20,10 @@ proj4.defs([
 
 // Connect to PostgreSQL
 const client = new Client({
-  host: '192.168.0.200',
+  host: 'johnnyip.com',
   port: 5434,
-  user: 'postgres',
-  password: 'capphoto',
+  user: '',
+  password: '',
   database: 'test-geo',
 });
 
