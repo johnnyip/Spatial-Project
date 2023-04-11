@@ -1,72 +1,65 @@
-const { Client } = require('pg');
 const fs = require('fs');
-const geojson = require('geojson');
-const proj4 = require('proj4');
+const pg = require('pg');
+const wellknown = require('wellknown');
+const copyFrom = require('pg-copy-streams').from;
 
-// Read GeoJSON file
-const geojsonData = JSON.parse(fs.readFileSync('geojson/HKGS_Dataset_Distribution-of-Metered-Parking-Spaces-and-Occupancy-of-those-Installed-with-New-Parking-Meters_2022-07-13-0800-00_fullset.geojson', 'utf8'));
+const geojsonData = fs.readFileSync('geojson/HKGS_Dataset_FEHD-facility-and-service-locations_2023-03-14-1708-02_fullset.geojson', 'utf-8');
 
-// Define the coordinate transformation
-const fromCRS = 'EPSG:2326';
-const toCRS = 'EPSG:4326';
-proj4.defs([
-  [
-    fromCRS,
-    '+proj=tmerc +lat_0=22.31213333333334 +lon_0=114.1785555555556 +k=1 +x_0=836694.05 +y_0=819069.8 +ellps=intl +towgs84=-162.619,-276.959,-161.764,0.067753,-2.24365,-1.15883,-1.09425 +units=m +no_defs',
-  ],
-  [toCRS, proj4.defs('WGS84')],
-]);
+const connectionString = 'postgres://ust:USTust123!@johnnyip.com:5434/test-geo';
 
-
-// Connect to PostgreSQL
-const client = new Client({
-  host: 'johnnyip.com',
-  port: 5434,
-  // user: 'ust',
-  // password: 'USTust123!',
-  database: 'test-geo',
-});
-
-async function main() {
+(async () => {
+  const client = new pg.Client(connectionString);
   await client.connect();
 
-  // Create table
-  await client.query(`
-    CREATE TABLE IF NOT EXISTS test_geojson (
-      id SERIAL PRIMARY KEY,
-      feature_id VARCHAR(255),
-      properties JSONB,
-      geom GEOMETRY(Point, 4326)
-    );
-  `);
+  const geojson = JSON.parse(geojsonData);
+  const features = geojson.features;
 
-  // Enable PostGIS extension if it's not enabled yet
-  await client.query(`CREATE EXTENSION IF NOT EXISTS postgis;`);
+  const copyStream = client.query(
+    copyFrom('COPY public_toilets (gmid, northing, easting, dataset, facility_name, address, district, type, telephone1, telephone2, fax_number, opening_hours, internal_id, last_update, geom) FROM STDIN (FORMAT csv)')
+  );
 
-  // Insert GeoJSON data into the table
-  for (const feature of geojsonData.features) {
-    const { id, geometry, properties } = feature;
-    const { coordinates } = geometry;
+  copyStream.on('error', (err) => {
+    console.error('Error importing data:', err);
+  });
 
-    // Convert easting and northing to longitude and latitude
-    const [longitude, latitude] = proj4(fromCRS, toCRS, [coordinates[0], coordinates[1]]);
+  copyStream.on('end', async () => {
+    console.log('Data imported successfully');
+    await client.end();
+  });
 
-    const wktPoint = `POINT(${longitude} ${latitude})`;
-
-    await client.query(
-      `
-        INSERT INTO test_geojson (feature_id, properties, geom)
-        VALUES ($1, $2, ST_GeomFromText($3, 4326));
-      `,
-      [id, properties, wktPoint]
-    );
+  for (const feature of features) {
+    const { properties, geometry } = feature;
+    const wkt = wellknown.stringify(geometry);
+    const row = [
+      properties.GMID,
+      properties.Northing,
+      properties.Easting,
+      properties.Dataset,
+      properties['Facility Name'],
+      properties.Address,
+      properties.District,
+      properties.Type,
+      properties.Telephone1,
+      properties.Telephone2,
+      properties['Fax Number'],
+      properties['Opening Hours'],
+      properties.ID,
+      properties['Last Update'],
+      wkt,
+    ]
+    .map((value) => {
+      if (value === undefined || value === 'N.A.') {
+        return '';
+      } else if (typeof value === 'string') {
+        return `"${value.replace(/"/g, '""')}"`;
+      } else {
+        return value;
+      }
+    })
+    .join(',');
+    
+    copyStream.write(row + '\n');
   }
 
-  console.log('Data imported successfully.');
-  await client.end();
-}
-
-main().catch((error) => {
-  console.error(error);
-  client.end();
-});
+  copyStream.end();
+})();
