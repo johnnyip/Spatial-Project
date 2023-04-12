@@ -2,7 +2,7 @@ const client = require('../db');
 
 exports.getAllToilets = async (req, res) => {
     try {
-        const queryResult = await client.query('SELECT * FROM public_toilets WHERE type= $1', ['PUBLIC TOILETS']);
+        const queryResult = await client.query('SELECT * FROM toilets WHERE type= $1', ['PUBLIC TOILETS']);
         res.status(200).json(queryResult.rows);
     } catch (err) {
         console.error(err);
@@ -14,7 +14,7 @@ exports.getToiletById = async (req, res) => {
     const id = req.params.id;
 
     try {
-        const queryResult = await client.query('SELECT * FROM public_toilets WHERE id = $1', [id]);
+        const queryResult = await client.query('SELECT * FROM toilets WHERE id = $1', [id]);
 
         if (queryResult.rows.length > 0) {
             res.status(200).json(queryResult.rows[0]);
