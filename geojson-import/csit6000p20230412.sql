@@ -111,7 +111,7 @@ CREATE TABLE public.toilets (
     "編號" character varying,
     "last update" timestamp with time zone,
     "更新日期" date,
-    wkb_geometry public.geometry(Point,2326)
+    geom public.geometry(Point,4326)
 );
 
 
