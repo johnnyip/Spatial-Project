@@ -3,7 +3,10 @@ const client = require('../db');
 exports.getAllToilets = async (req, res) => {
     try {
         const queryResult = await client.query('SELECT * FROM toilets WHERE type= $1', ['PUBLIC TOILETS']);
-        res.status(200).json(queryResult.rows);
+        let result = queryResult.rows
+        result.map(row => row['average_rating']=4.5)
+        console.log(result);
+        res.status(200).json(result);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Internal server error' });
