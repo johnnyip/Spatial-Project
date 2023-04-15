@@ -15,7 +15,7 @@ const connectionString = 'postgres://ust:USTust123!@johnnyip.com:5434/test-geo';
   const features = geojson.features;
 
   const copyStream = client.query(
-    copyFrom('COPY toilets (gmid, northing, easting, dataset, "facility name", address, "數據集", "設施名稱", "地址", district, "地區", type, "設施類別", telephone1, "電話1", telephone2, "電話2", "fax number", "傳真", "opening hours", "開放時間", id, "編號", "last update", "更新日期", geom) FROM STDIN (FORMAT csv)')
+    copyFrom('COPY toilets (gmid, northing, easting, dataset, "facility name", address, "數據集", "設施名稱", "地址", district, "地區", type, "設施類別", telephone1, "電話1", telephone2, "電話2", "fax number", "傳真", "opening hours", "開放時間", id, "編號", "last update", "更新日期", geom, longitude, latitude) FROM STDIN (FORMAT csv)')
   );
 
   copyStream.on('error', (err) => {
@@ -57,6 +57,8 @@ const connectionString = 'postgres://ust:USTust123!@johnnyip.com:5434/test-geo';
       properties['Last Update'],
       properties["更新日期"],
       wkt,
+      geometry.coordinates[0],
+      geometry.coordinates[1],
     ]
     .map((value) => {
       if (value === undefined || value === 'N.A.') {
