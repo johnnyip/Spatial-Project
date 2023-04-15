@@ -1,6 +1,8 @@
 import { Layout, theme } from 'antd';
 import Map from './Map';
 import SearchBox from './SearchBox';
+import ToiletService from '../service/ToiletService';
+import { useEffect } from 'react';
 
 const { Header, Content, Footer } = Layout;
 
@@ -8,12 +10,17 @@ const HomePage = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  useEffect(() => {
+    ToiletService.getToilets();
+  }, []);
+
   return (
     <Layout className="layout">
       <Header
         style={{
         position: 'sticky',
-        marginBottom: '30px',
+        marginBottom: '25px',
         zIndex: 1,
         width: '100%',
         }}
