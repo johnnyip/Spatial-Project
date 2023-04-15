@@ -1,5 +1,6 @@
 const express = require('express');
 const pg = require('pg');
+const cors = require('cors'); // Import the cors package
 const app = express();
 const port = 3000;
 
@@ -8,6 +9,7 @@ const client = new pg.Client(connectionString);
 
 const toiletsController = require('./toilets/toiletsController');
 
+app.use(cors()); // Add CORS middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
