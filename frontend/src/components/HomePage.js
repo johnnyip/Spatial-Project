@@ -1,6 +1,5 @@
 import { Layout, theme } from 'antd';
 import Map from './Map';
-import SearchBox from './SearchBox';
 import ToiletService from '../service/ToiletService';
 import { useEffect } from 'react';
 
@@ -47,7 +46,6 @@ const HomePage = () => {
             marginTop: '-8px'
           }}
         >
-          <SearchBox />
         </div>
       </Header>
       <Content

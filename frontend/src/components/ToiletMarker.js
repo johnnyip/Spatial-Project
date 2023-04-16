@@ -12,6 +12,11 @@ const ToiletMarker = (props) => {
     const tele1 = props.info.telephone1;
     const tele2 = tele1? "/" + props.info.telephone2 : "";
     const contacts = tele1 + tele2;
+    const rate = props.info.average_rating;
+
+    const handleRateChange = (val) => {
+        console.log(val);
+    }
 
     return (
         <Marker position={position} icon={Icons.blue}>
@@ -20,7 +25,7 @@ const ToiletMarker = (props) => {
                 <br></br>
                 address: {address}
                 <br></br>
-                Rate: <Rate/>
+                Rate: <Rate allowHalf defaultValue={rate} onChange={handleRateChange} />
                 <br></br>
                 Opening hours: {hours}
                 <br></br>
