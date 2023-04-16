@@ -8,7 +8,7 @@ export const mapSlice = createSlice({
     reducers: {
         setToilets: (state, action) => {
             state.toilets = action.payload;
-        },
+        }
     }
 });
 

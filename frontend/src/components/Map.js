@@ -55,7 +55,7 @@ const Map = () => {
             />
             <MyLocationMarker/>
             {
-                toilets?.map((t) => <ToiletMarker info={t} key={t.id}/>
+                toilets?.map((t) => <ToiletMarker info={t} key={t.id} />
                 )
             }
         </MapContainer>
