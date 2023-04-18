@@ -1,8 +1,10 @@
 import { Marker, Popup } from "react-leaflet";
 import Icons from "./Icons";
-import { Rate } from "antd";
+import { Rate, Tabs } from "antd";
 import ToiletService from "../service/ToiletService";
 import { useState } from "react";
+import Comments from "./Comments";
+import PostComment from "./PostComment";
 
 const ToiletMarker = (props) => {
     const id = props.info.id;
@@ -14,20 +16,26 @@ const ToiletMarker = (props) => {
     const tele1 = props.info.telephone1;
     const tele2 = tele1? "/" + props.info.telephone2 : "";
     const contacts = tele1 + tele2;
-    const [avgRate, setAvgRate] = useState(props.info.average_rating);
+    const [avgRate, setAvgRate] = useState(0);
     const [rates, setRates] = useState([]);
+    const [showPostComment, setShowPostComment] = useState(false);
+    const [tabKey, setTabKey] = useState("tab1");
 
-    const handleRateChange = async (val) => {
-        ToiletService.updateToiletRate(id, val);
-        const newRates = [...rates, {id: rates.length + 1, toiletId: id, rate: val}];
-        const newAvg = newRates.reduce((a, {rate}) => a + rate, 0) / newRates.length;
-        setRates(newRates);
-        setAvgRate(newAvg);
+    const handleClickComments = async () => {
+        setTabKey("tab2");
     }
 
     const handleClickMarker = async () => {
         const ratings = await ToiletService.getRatesById(id);
         setRates(ratings);
+        const validRates  = ratings.filter(r => r.rate > 0 );
+        if (validRates.length !== 0) {
+            setAvgRate(validRates.reduce((a, {rate}) => a + rate, 0) / validRates.length);
+        }
+    }
+
+    const handleTabClick = (key) => {
+        setTabKey(key);
     }
 
     return (
@@ -36,16 +44,33 @@ const ToiletMarker = (props) => {
                 click: handleClickMarker,
               }}>
             <Popup>
-                Name: {name}
-                <br></br>
-                Address: {address}
-                <br></br>
-                Rate: <Rate allowHalf defaultValue={avgRate} onChange={handleRateChange} value={avgRate} />
-                {" (Score: " + avgRate.toFixed(2) + ", " + rates.length + " ratings)"}
-                <br></br>
-                Opening hours: {hours}
-                <br></br>
-                Contacts: {contacts}
+                <Tabs defaultActiveKey="tab1" size="small" activeKey={tabKey} onTabClick={handleTabClick}>
+                    <Tabs.TabPane tab="Infomation" key="tab1">
+                    <>
+                        Name: {name}
+                        <br></br>
+                        Address: {address}
+                        <br></br>
+                        Rate:
+                        <a onClick={handleClickComments}>
+                            <Rate allowHalf={true} disabled={true} value={avgRate} />
+                        </a>
+                        <br></br>
+                        {" (Score: " + avgRate.toFixed(2) + ", " + rates.length + " "}
+                        <a onClick={handleClickComments}>comments</a>{")"}
+                        <br></br>
+                        Opening hours: {hours}
+                        <br></br>
+                        Contacts: {contacts}
+                    </>
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab="Comments" key="tab2">
+                        <Comments data={rates} setShowPostComment={setShowPostComment} />
+                    </Tabs.TabPane>
+                </Tabs>
+                {
+                    showPostComment && <PostComment setShow={setShowPostComment} updateRates={handleClickMarker} toiletId={id} />
+                }
             </Popup>
         </Marker>
     )
