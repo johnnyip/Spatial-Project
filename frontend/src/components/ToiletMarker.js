@@ -15,7 +15,7 @@ const ToiletMarker = (props) => {
     const hours = props.info["開放時間"] + "/ " + props.info["opening hours"];
     const tele1 = props.info.telephone1;
     const tele2 = tele1? "/" + props.info.telephone2 : "";
-    const contacts = tele1 + tele2;
+    const contacts = tele2 === ""? "N/A" : tele1 + tele2;
     const [avgRate, setAvgRate] = useState(0);
     const [rates, setRates] = useState([]);
     const [showPostComment, setShowPostComment] = useState(false);
