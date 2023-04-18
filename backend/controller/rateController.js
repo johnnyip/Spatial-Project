@@ -63,7 +63,7 @@ exports.saveRate = async (req, res) => {
 function formatDate(date) {
     const addLeadingZero = (num) => (num < 10 ? '0' : '') + num;
 
-    const dateFormatter = new Intl.DateTimeFormat('en-US', {
+    const dateFormatter = new Intl.DateTimeFormat('en-GB', {
         'timeZone': 'Asia/Hong_Kong',
         year: 'numeric',
         month: '2-digit',
@@ -75,7 +75,7 @@ function formatDate(date) {
     });
 
     
-    let date_ = dateFormatter.format(date);
+    let date_ = dateFormatter.format(date).replace(',', '');
     // console.log(date)
     // console.log(date_)
     return date_;
