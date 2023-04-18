@@ -63,12 +63,21 @@ exports.saveRate = async (req, res) => {
 function formatDate(date) {
     const addLeadingZero = (num) => (num < 10 ? '0' : '') + num;
 
-    const day = addLeadingZero(date.getDate());
-    const month = addLeadingZero(date.getMonth() + 1); // Months are 0-based
-    const year = date.getFullYear().toString().slice(-2);
-    const hours = addLeadingZero(date.getHours());
-    const minutes = addLeadingZero(date.getMinutes());
-    const seconds = addLeadingZero(date.getSeconds());
+    const dateFormatter = new Intl.DateTimeFormat('en-US', {
+        'timeZone': 'Asia/Hong_Kong',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    });
 
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    
+    let date_ = dateFormatter.format(date);
+    // console.log(date)
+    // console.log(date_)
+    return date_;
+    
 }
