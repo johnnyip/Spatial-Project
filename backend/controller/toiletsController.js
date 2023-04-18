@@ -2,10 +2,10 @@ const client = require('../db');
 
 exports.getAllToilets = async (req, res) => {
     try {
-        const queryResult = await client.query(`SELECT t.*, CAST(ROUND(AVG(r.rate), 1) AS DECIMAL(10,1)) as average_rating
+        const queryResult = await client.query(`SELECT t.*, CAST(ROUND(AVG(CASE WHEN r.rate != 0 THEN r.rate ELSE NULL END), 1) AS DECIMAL(10,1)) as average_rating
         FROM toilets t
         LEFT JOIN rate r ON t.id = r."toiletId"
-        WHERE t.type = 'PUBLIC TOILETS'
+        WHERE t.type = 'PUBLIC TOILETS' 
         GROUP BY t.id
         ORDER BY t.id;`);
         let result = queryResult.rows
