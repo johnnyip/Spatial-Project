@@ -1,4 +1,4 @@
-const client = require('../db');
+const client = require('../functions/db');
 
 exports.getAllRates = async (req, res) => {
     try {
@@ -74,10 +74,43 @@ function formatDate(date) {
         hour12: false
     });
 
-    
+
     let date_ = dateFormatter.format(date).replace(',', '');
     // console.log(date)
     // console.log(date_)
     return date_;
-    
+
 }
+exports.getAllCommentsWithToilets = async () => {
+    let data = []
+    try {
+        const queryResult = await client.query(`SELECT 
+        r.*,
+        t."facility name",
+        t.address,
+        t.district,
+        t.telephone1,
+        t.longitude,
+        t.latitude
+    FROM rate r
+    JOIN toilets t ON r."toiletId" = t.id`);
+        data = queryResult.rows
+
+        //Format date
+        if (data.length > 0) {
+            for (let item of data) {
+                if (item.date != null) {
+                    item['date'] = formatDate(item['date'])
+                    console.log(item['date'])
+                }
+            }
+        }
+
+
+        console.log(data);
+    } catch (err) {
+        console.error(err);
+    }
+
+    return data;
+};

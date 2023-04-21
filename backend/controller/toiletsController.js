@@ -1,4 +1,4 @@
-const client = require('../db');
+const client = require('../functions/db');
 
 exports.getAllToilets = async (req, res) => {
     try {
@@ -28,7 +28,7 @@ exports.getToiletById = async (req, res) => {
         WHERE t.type = 'PUBLIC TOILETS' AND t.id = ${id}
         GROUP BY t.id
         ORDER BY t.id;`);
-        
+
         let result = queryResult.rows
         result.map(row => row['average_rating'] = row['average_rating'] != null ? parseFloat(row['average_rating']) : 0)
         console.log(queryResult.rows)
