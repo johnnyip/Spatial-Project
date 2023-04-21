@@ -26,7 +26,7 @@ app.post('/rate', rateController.saveRate);
 app.get('/rate', rateController.getAllRates);
 app.get('/rate/:toiletId', rateController.getRatesByToiletId);
 
-app.post('/report', upload.none(), (req, res) => {
+app.get('/report', upload.none(), (req, res) => {
     let data = []
 
     generateExcelReport(data, (fileName) => {
