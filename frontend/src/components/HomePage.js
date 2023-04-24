@@ -55,9 +55,6 @@ const HomePage = () => {
       >
         <div
           className="site-layout-content"
-          style={{
-            background: colorBgContainer,
-          }}
         >
           <Map />
         </div>
