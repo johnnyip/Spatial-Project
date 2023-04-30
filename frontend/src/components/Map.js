@@ -149,7 +149,7 @@ const Map = () => {
             <WMSTileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://qgis.johnnyip.com/?SERVICE=WMS&request=GetMap
-                &MAP=/etc/qgisserver/csit6000p20230412.qgz"
+                &MAP=/etc/qgisserver/csit6000p20230430.qgz"
                 params={{
                     layers: 'districts,toilets,LandsDLabel,LandsDTopoMap',
                     transparent: true,
