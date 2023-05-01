@@ -1245,3 +1245,46 @@ INSERT INTO public.toilets (id, gmid, northing, easting, dataset, "facility name
 INSERT INTO public.toilets (id, gmid, northing, easting, dataset, "facility name", address, "數據集", "設施名稱", "地址", district, "地區", type, "設施類別", telephone1, "電話1", telephone2, "電話2", fax_number, "傳真", "opening hours", "開放時間", "編號", "last update", "更新日期", geom, longitude, latitude) VALUES (1164, 'LVlG0cajgj', 833611.1, 821023.1, 'FEHD facility and service locations', 'Tai Tong Road Public Toilet and Bathhouse', 'Sai Ching Street (Near Manhattan Plaza), Yuen Long', '食物環境衞生署的設施及服務位置', '大棠路公廁及浴室', '元朗西菁街(近富達廣場)', 'YUEN LONG', '元朗區', 'PUBLIC TOILETS', '公廁', null, null, null, null, null, null, '24 hours', '24 小時', '927', '2023-03-14 09:08:02.000000 +00:00', '2012-09-13', '0101000020E61000000936AE7FD7815C40D3BCE3141D713640', 114.028778, 22.44185);
 INSERT INTO public.toilets (id, gmid, northing, easting, dataset, "facility name", address, "數據集", "設施名稱", "地址", district, "地區", type, "設施類別", telephone1, "電話1", telephone2, "電話2", fax_number, "傳真", "opening hours", "開放時間", "編號", "last update", "更新日期", geom, longitude, latitude) VALUES (1165, 'g8dYEJduV9', 826118.1, 836328.1, 'FEHD facility and service locations', 'Chik Fai Street Tai Wai Refuse Collection Point', 'Chik Fai Street, Tai Wai Market', '食物環境衞生署的設施及服務位置', '大圍積輝街垃圾收集站', '積輝街大圍街市', 'SHA TIN', '沙田區', 'PUBLIC REFUSE COLLECTION POINTS', '公眾垃圾收集站', null, null, null, null, null, null, '7:00 am - 11:30 pm', '上午七時至下午十一時半', '328', '2023-03-14 09:08:02.000000 +00:00', '2011-12-06', '0101000020E6100000789ACC785B8B5C400D6E6B0BCF5F3640', 114.177458, 22.374253);
 INSERT INTO public.toilets (id, gmid, northing, easting, dataset, "facility name", address, "數據集", "設施名稱", "地址", district, "地區", type, "設施類別", telephone1, "電話1", telephone2, "電話2", fax_number, "傳真", "opening hours", "開放時間", "編號", "last update", "更新日期", geom, longitude, latitude) VALUES (1166, '0w9n4e1zOd', 816081.1, 833811, 'FEHD facility and service locations', 'Gage Street Refuse Collection Point', '38-42 Gage Street, Central', '食物環境衞生署的設施及服務位置', '結志街垃圾收集站', '中環結志街38-42號', 'CENTRAL AND WESTERN', '中西區', 'PUBLIC REFUSE COLLECTION POINTS', '公眾垃圾收集站', null, null, null, null, null, null, '24 hours', '二十四小時', '160', '2023-03-14 09:08:02.000000 +00:00', '2017-10-21', '0101000020E61000005C8DEC4ACB895C402EC901BB9A483640', 114.153033, 22.283611);
+
+
+create table rate
+(
+    id         integer default nextval('rate_id_seq'::regclass) not null
+        primary key,
+    "toiletId" integer                                          not null
+        constraint rate_toilet_id_fkey
+            references toilets,
+    rate       integer
+        constraint rate_rate_check
+            check ((rate >= 0) AND (rate <= 5)),
+    comment    text,
+    date       timestamp with time zone
+);
+
+alter table rate
+    owner to ust;
+
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (10, 1, 3, '', '2023-04-18 08:18:46.560000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (11, 1, 0, 'This toilet is nasty!', '2023-04-18 08:19:00.704000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (12, 213, null, null, '2023-04-18 11:22:54.489000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (13, 213, null, null, '2023-04-18 11:23:02.159000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (14, 213, null, null, '2023-04-18 11:23:05.835000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (15, 213, 4, 'good enough', '2023-04-18 11:59:09.092000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (16, 1156, 4, 'good enough', '2023-04-18 12:03:29.154000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (17, 1156, 3, null, '2023-04-18 12:12:05.946000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (18, 611, 2, 'This one is so dirty', '2023-04-18 12:31:34.696000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (19, 379, 5, 'Clean', '2023-04-18 12:32:02.890000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (20, 1128, 5, 'wonderful!!!
+', '2023-04-18 12:34:26.511000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (21, 1128, 4, '無得頂!!', '2023-04-18 12:50:25.945000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (22, 114, 2, 'This toilet is dirty.', '2023-04-22 08:40:38.458000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (23, 114, 2, 'Really dirty!!', '2023-04-22 08:49:18.744000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (24, 67, 3, 'ok la~', '2023-05-01 12:00:13.718000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (25, 251, 2, 'The toilet is dirty', '2023-05-01 13:15:12.776000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (26, 251, 1, 'Really Dirty!!', '2023-05-01 13:19:22.254000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (27, 455, 5, 'This toilet is very clean !', '2023-05-01 13:25:09.905000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (28, 367, 5, 'Very clean and the floor is dry', '2023-05-01 13:25:59.291000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (29, 367, 5, 'Excellent condition', '2023-05-01 13:26:30.183000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (30, 1059, 2, 'The toilet is dirty', '2023-05-01 14:15:54.721000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (31, 1059, 1, 'Really Dirty!!!!', '2023-05-01 14:18:08.986000 +00:00');
+INSERT INTO public.rate (id, "toiletId", rate, comment, date) VALUES (32, 367, 5, 'OMG what a clean toilet !!', '2023-05-01 17:06:51.697000 +00:00');
