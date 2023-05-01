@@ -32,6 +32,9 @@ services:
     image: johnnyip/spatial-frontend:latest
     ports:
       - "80:3000"
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:3000
+      - REACT_APP_QGIS_URL=http://localhost:8080
 
   qgis:
     image: camptocamp/qgis-server:latest
