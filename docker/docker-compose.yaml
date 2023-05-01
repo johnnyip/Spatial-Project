@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ust
+      POSTGRES_PASSWORD: USTust123!
+      POSTGRES_DB: test-geo
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    image: johnnyip/spatial-backend:latest
+    depends_on:
+      - postgres
+    environment:
+      - CONNECTION_STRING=postgresql://ust:USTust123!@postgres:5432/test-geo
+    ports:
+      - "3000:3000"
+
+  frontend:
+    image: johnnyip/spatial-frontend:latest
+    ports:
+      - "80:3000"
+
+  qgis:
+    image: camptocamp/qgis-server:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./qgis-file:/etc/qgisserver
+    environment:
+      - QGIS_PROJECT_FILE=/etc/qgisserver/csit6000p20230430.qgz
+      - QGIS_SERVER_LANDING_PAGE_PROJECTS_DIRECTORIES=/etc/qgisserver
+
+volumes:
+  pgdata:

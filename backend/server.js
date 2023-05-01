@@ -1,15 +1,12 @@
 const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
-const pg = require('pg');
 const fs = require('fs');
 
 const app = express();
 const port = 3000;
 const upload = multer();
 
-const connectionString = 'postgres://ust:USTust123!@johnnyip.com:5434/test-geo';
-const client = new pg.Client(connectionString);
 
 const toiletsController = require('./controller/toiletsController');
 const rateController = require('./controller/rateController');
