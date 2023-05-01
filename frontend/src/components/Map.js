@@ -149,7 +149,7 @@ const Map = () => {
                 url="https://qgis.johnnyip.com/?SERVICE=WMS&request=GetMap
                 &MAP=/etc/qgisserver/csit6000p20230430.qgz"
                 params={{
-                    layers: 'districts,toilets',
+                    layers: 'districts,toilets,LandsDLabel',
                     transparent: true,
                     format: 'image/png',
                     version: '1.3.0'
