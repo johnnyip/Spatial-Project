@@ -17,3 +17,6 @@
 
 ## Backend API Specification
 [https://swagger.johnnyip.com/](https://swagger.johnnyip.com/)
+
+
+[Download](https://drive.johnnyip.com/d/s/tOZIC17QasynG6aEwjexArn340hRdtdk/IYvz32RmDWHu-PGpgJ9nRNlkS3DjSlsL-o7gg1wcyaAo)

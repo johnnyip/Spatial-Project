@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   postgres:
-    image: postgres:latest
+    image: johnnyip/spatial-db:latest
     environment:
       POSTGRES_USER: ust
       POSTGRES_PASSWORD: USTust123!
@@ -11,15 +11,22 @@ services:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ust"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
     image: johnnyip/spatial-backend:latest
-    depends_on:
-      - postgres
     environment:
       - CONNECTION_STRING=postgresql://ust:USTust123!@postgres:5432/test-geo
     ports:
       - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 
   frontend:
     image: johnnyip/spatial-frontend:latest
