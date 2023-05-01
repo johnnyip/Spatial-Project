@@ -77,7 +77,7 @@ create table toilets
 );
 
 alter table toilets
-    owner to postgres;
+    owner to ust;
 
 INSERT INTO public.toilets (id, gmid, northing, easting, dataset, "facility name", address, "數據集", "設施名稱", "地址", district, "地區", type, "設施類別", telephone1, "電話1", telephone2, "電話2", fax_number, "傳真", "opening hours", "開放時間", "編號", "last update", "更新日期", geom, longitude, latitude) VALUES (1, '8I66Olin2T', 838021, 829468, 'FEHD facility and service locations', 'Lin Tong Mei Public Toilet', 'Lin Tong Mei, Sheung Shui', '食物環境衞生署的設施及服務位置', '蓮塘尾公廁', '上水蓮塘尾', 'NORTH', '北區', 'PUBLIC TOILETS', '公廁', null, null, null, null, null, null, '24 hours', '24 小時', '941', '2023-03-14 09:08:02.000000 +00:00', '2014-06-03', '0101000020E6100000ADDF4C4C17875C404791B586527B3640', 114.110797, 22.481728);
 INSERT INTO public.toilets (id, gmid, northing, easting, dataset, "facility name", address, "數據集", "設施名稱", "地址", district, "地區", type, "設施類別", telephone1, "電話1", telephone2, "電話2", fax_number, "傳真", "opening hours", "開放時間", "編號", "last update", "更新日期", geom, longitude, latitude) VALUES (2, 'oukDYr5jT8', 826474.1, 846143.1, 'FEHD facility and service locations', 'Tui Min Hoi Public Toilet', 'Tui Min Hoi Village', '食物環境衞生署的設施及服務位置', '對面海公廁', '對面海村', 'SAI KUNG', '西貢區', 'PUBLIC TOILETS', '公廁', null, null, null, null, null, null, '24 hours', '24 小時', '730', '2023-03-14 09:08:02.000000 +00:00', '2021-09-15', '0101000020E6100000F4A78DEA74915C40253CA1D79F603640', 114.272761, 22.377439);
