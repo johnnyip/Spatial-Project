@@ -1,5 +1,7 @@
 SET search_path TO 'test-geo';
 
+CREATE EXTENSION IF NOT EXISTS postgis;
+
 create table public.districts
 (
     ogc_fid            serial,
