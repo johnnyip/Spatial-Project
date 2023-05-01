@@ -8,7 +8,7 @@ import { Select } from "antd";
 
 
 const options = [
-    {
+    {   
         value: "22.2833322,114.1499994",
         label: "Central and Western District"
     },
@@ -90,79 +90,77 @@ const Map = () => {
 
 
     const handleChange = (value) => {
-        setCenter(value.split(',').map(Number));
+    setCenter(value.split(',').map(Number));
     };
 
     const ChangeView = ({ center, zoom }) => {
         const map = useMap();
         map.setView(center, zoom);
         return null;
-    }
+      }
 
     const MyLocationMarker = () => {
         const [position, setPosition] = useState(null)
         const map = useMapEvents({
-            click() {
-                map.locate()
-            },
-            locationfound(e) {
-                setPosition(e.latlng)
-                map.setView(e.latlng, map.getZoom())
-            },
+          click() {
+            map.locate()
+          },
+          locationfound(e) {
+            setPosition(e.latlng)
+            map.setView(e.latlng, map.getZoom())
+          },
         })
-
+      
         return position === null ? null : (
-            <Marker position={position} icon={Icons.red}>
-                <Popup>
-                    You are here
-                </Popup>
-            </Marker>
+          <Marker position={position} icon={Icons.red}>
+            <Popup>
+                You are here
+            </Popup>
+          </Marker>
         )
     }
 
     return (
         <>
-            <div style={{ width: '500px', paddingBottom: '10px' }} >
-                <Select
-                    showSearch
-                    filterOption={(input, option) =>
-                        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                    }
-                    style={{ width: '50%' }}
-                    placeholder="Select a District"
-                    onChange={handleChange}
-                    options={options}
-                />
-            </div>
-
-            <MapContainer
-                style={{
-                    width: "100wh",
-                    height: "70vh"
+        <div style={{width: '500px', paddingBottom: '10px'}} >
+            <Select
+            showSearch
+            filterOption={(input, option) =>
+                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+            }
+            style={{width: '50%'}}
+            placeholder="Select a District"
+            onChange={handleChange}
+            options={options}
+            />
+        </div>
+        
+        <MapContainer
+            style={{   width: "100wh",
+                height: "70vh" }}
+            center={center}
+            zoom={ZOOM_LEVEL}
+        >
+            <ChangeView center={center} zoom={ZOOM_LEVEL} /> 
+            <TileLayer
+                url="https://mapapi.geodata.gov.hk/gs/api/v1.0.0/xyz/basemap/WGS84/{z}/{x}/{y}.png"
+            />
+            <WMSTileLayer
+                url="https://qgis.johnnyip.com/?SERVICE=WMS&request=GetMap
+                &MAP=/etc/qgisserver/csit6000p20230430.qgz"
+                params={{
+                    layers: 'districts,toilets,LandsDLabel',
+                    transparent: true,
+                    format: 'image/png',
+                    version: '1.3.0'
                 }}
-                center={center}
-                zoom={ZOOM_LEVEL}
-            >
-                <ChangeView center={center} zoom={ZOOM_LEVEL} />
-                <TileLayer
-                    url="https://mapapi.geodata.gov.hk/gs/api/v1.0.0/xyz/basemap/WGS84/{z}/{x}/{y}.png"
-                />
-                <WMSTileLayer
-                    url={`${process.env.REACT_APP_QGIS_URL !== undefined ? process.env.REACT_APP_QGIS_URL : 'https://qgis.johnnyip.com'}
-                    /?SERVICE=WMS&request=GetMap&MAP=/etc/qgisserver/csit6000p20230430.qgz`}
-                    params={{
-                        layers: 'districts,toilets,LandsDLabel',
-                        transparent: true,
-                        format: 'image/png',
-                        version: '1.3.0'
-                    }}
-                />
-                <MyLocationMarker />
-                {
-                    toilets?.map((t) => <ToiletMarker info={t} key={t.id} />
-                    )
-                }
-            </MapContainer>
+            />
+            <MyLocationMarker/>
+            {
+                toilets?.map((t) => <ToiletMarker info={t} key={t.id} />
+                )
+            }
+        </MapContainer>
         </>
     )
 }
