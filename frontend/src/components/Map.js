@@ -148,7 +148,7 @@ const Map = () => {
                     url="https://mapapi.geodata.gov.hk/gs/api/v1.0.0/xyz/basemap/WGS84/{z}/{x}/{y}.png"
                 />
                 <WMSTileLayer
-                    url={`${REACT_APP_QGIS_URL !== undefined ? REACT_APP_QGIS_URL : 'https://qgis.johnnyip.com'}
+                    url={`${process.env.REACT_APP_QGIS_URL !== undefined ? process.env.REACT_APP_QGIS_URL : 'https://qgis.johnnyip.com'}
                     /?SERVICE=WMS&request=GetMap&MAP=/etc/qgisserver/csit6000p20230430.qgz`}
                     params={{
                         layers: 'districts,toilets,LandsDLabel',
