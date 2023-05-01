@@ -1,3 +1,5 @@
+SET search_path TO test-geo;
+
 create table districts
 (
     ogc_fid            serial,
