@@ -143,16 +143,13 @@ const Map = () => {
         >
             <ChangeView center={center} zoom={ZOOM_LEVEL} /> 
             <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png "
+                url="https://mapapi.geodata.gov.hk/gs/api/v1.0.0/xyz/basemap/WGS84/{z}/{x}/{y}.png"
             />
             <WMSTileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://qgis.johnnyip.com/?SERVICE=WMS&request=GetMap
-                &MAP=/etc/qgisserver/csit6000p20230412.qgz"
+                &MAP=/etc/qgisserver/csit6000p20230430.qgz"
                 params={{
                     layers: 'districts,toilets,LandsDLabel,LandsDTopoMap',
-                    transparent: true,
                     format: 'image/png',
                     version: '1.3.0'
                 }}
