@@ -45,7 +45,7 @@ const ToiletMarker = (props) => {
               }}>
             <Popup>
                 <Tabs defaultActiveKey="tab1" size="small" activeKey={tabKey} onTabClick={handleTabClick}>
-                    <Tabs.TabPane tab="Infomation" key="tab1">
+                    <Tabs.TabPane tab="Information" key="tab1">
                     <>
                         Name: {name}
                         <br></br>
